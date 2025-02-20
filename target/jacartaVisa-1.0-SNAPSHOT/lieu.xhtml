@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+    <h:head>
+        <title>Gestion des Lieux</title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+        <style>
+            body {
+                background-color: #f8f9fa;
+            }
+            .card {
+                border-radius: 0.75rem;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                margin: auto;
+            }
+            .header-title {
+                font-size: 1.25rem;
+                color: #374151;
+                margin-bottom: 1.25rem;
+            }
+        </style>
+    </h:head>
+    <h:body>
+
+        <div class="container mx-auto mt-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Formulaire d'ajout -->
+                <div class="col-span-1">
+                    <div class="card p-6 bg-white">
+                        <h2 class="header-title font-semibold text-lg">Ajouter un Lieu</h2>
+
+                        <h:form id="lieuForm">
+                            <div class="mb-4">
+                                <h:outputLabel for="nom" value="Nom :" class="block text-sm font-medium text-gray-700"/>
+                                <h:inputText id="nom" value="#{lieuBean.nom}" required="true" requiredMessage="Le nom est obligatoire" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
+                            </div>
+
+                            <div class="mb-4">
+                                <h:outputLabel for="description" value="Description :" class="block text-sm font-medium text-gray-700"/>
+                                <h:inputTextarea id="description" value="#{lieuBean.description}" rows="2" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
+                            </div>
+
+                            <div class="mb-4 grid grid-cols-2 gap-4">
+                                <div>
+                                    <h:outputLabel for="latitude" value="Latitude :" class="block text-sm font-medium text-gray-700"/>
+                                    <h:inputText id="latitude" value="#{lieuBean.latitude}" required="true" requiredMessage="Latitude requise" validatorMessage="Latitude invalide" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
+                                </div>
+                                <div>
+                                    <h:outputLabel for="longitude" value="Longitude :" class="block text-sm font-medium text-gray-700"/>
+                                    <h:inputText id="longitude" value="#{lieuBean.longitude}" required="true" requiredMessage="Longitude requise" validatorMessage="Longitude invalide" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
+                                </div>
+                            </div>
+
+                            <h:messages showDetail="true" styleClass="text-red-500 text-sm mb-4"/>
+
+                            <h:commandButton value="Ajouter" action="#{lieuBean.ajouterLieu}" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"/>
+                        </h:form>
+                    </div>
+                </div>
+
+                <!-- Tableau des lieux -->
+                <div class="col-span-1">
+                    <div class="card p-6 bg-white">
+                        <h2 class="header-title font-semibold text-lg">Liste des Lieux</h2>
+                        <h:dataTable value="#{lieuBean.lieux}" var="lieu" class="min-w-full divide-y divide-gray-200">
+                            <h:column>
+                                <f:facet name="header"><b>Nom</b></f:facet>
+                                <span class="block text-sm text-gray-900">#{lieu.nom}</span>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header"><b>Description</b></f:facet>
+                                <span class="block text-sm text-gray-900">#{lieu.description}</span>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header"><b>Latitude</b></f:facet>
+                                <span class="block text-sm text-gray-900">#{lieu.latitude}</span>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header"><b>Longitude</b></f:facet>
+                                <span class="block text-sm text-gray-900">#{lieu.longitude}</span>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header"><b>Actions</b></f:facet>
+                                <div class="flex space-x-2">
+                                    <h:commandButton value="Modifier" action="#{lieuBean.modifierLieu(lieu)}" class="bg-yellow-500 text-white py-1 px-2 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"/>
+                                    <h:commandButton value="Supprimer" action="#{lieuBean.supprimerLieu(lieu)}" class="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce lieu ?');"/>
+                                </div>
+                            </h:column>
+                        </h:dataTable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
